@@ -187,7 +187,9 @@ exports.collectContentImage = (name, context) => {
     delete lineAttributes.img;
   }
   if (tname === 'img') {
-    lineAttributes.img = context.node.outerHTML;
+    
+    var img = `<img src='${context.node.attribs.src}'/> `;
+    lineAttributes.img = img;
   }
 };
 

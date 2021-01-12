@@ -1,23 +1,31 @@
 'use strict';
 
 const Changeset = require('ep_etherpad-lite/static/js/Changeset');
+const _ = require('ep_etherpad-lite/static/js/underscore');
 
 const _analyzeLine = (alineAttrs, apool) => {
-  let image = null;
+  let img = null;
   if (alineAttrs) {
     const opIter = Changeset.opIterator(alineAttrs);
     if (opIter.hasNext()) {
       const op = opIter.next();
-      image = Changeset.opAttributeValue(op, 'img', apool).replace(/"/g, "'");
+      img = Changeset.opAttributeValue(op, 'img', apool);
     }
   }
-
-  return image;
+  img = img.replace(/"/g, "'");
+  return img;
 };
 
-exports.getLineHTMLForExport = async (hook, context) => {
-  const image = _analyzeLine(context.attribLine, context.apool);
-  if (image) {
-    context.lineContent = image;
+
+exports.getLineHTMLForExport = async (hookName, context) => {
+  const img = _analyzeLine(context.attribLine, context.apool);
+  if (img) {
+    if (context.text.indexOf('*') === 0) {
+      context.lineContent = context.lineContent.replace('*', '');
+    }
+
+    context.lineContent = `${img} `;
+    return context.lineContent;
   }
 };
+
