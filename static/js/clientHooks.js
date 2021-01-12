@@ -194,3 +194,4 @@ exports.collectContentImage = (name, context) => {
 };
 
 exports.aceRegisterBlockElements = () => ['img'];
+exports.ccRegisterBlockElements = () => ['img']; // block elements <img:1>
